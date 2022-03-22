@@ -2,12 +2,16 @@ import numpy as np
 import random as random
 
 #Problem: 
-#In dnd your ability scores are determined by rolling four 6-sided dice and subtracting the smallest number. The aim here is to use different methods of determining the average score.
+#In D&D, your ability scores are determined by rolling four 6-sided dice, discarding the smallest number and summing the remaining three. 
+#The aim here is to use different methods of determining the average score.
 
 
-#1. Closed form solution
+#Method 1: Closed form solution
+#
+#Description: This method will create a matrix of all possible outcomes and work out the weighted expectation for the score
+#
+#Step 1: Initialise matrix of all possible dice rolls, set counter values (which will be used later) at 1, and set a running average to 0
 
-#Initialise matrix of all possible dice rolls, counter values (which will be used later) and a running average
 A = np.zeros((1296, 4))
 i1 = 1
 i2 = 1
@@ -16,8 +20,8 @@ i4 = 1
 
 avg = 0
 
-#Transforms the matrix in to one where every row represents a dice roll, starting with 1, 1, 1, 1, then 1, 1, 1, 2, etc., and ending with 6, 6, 6, 6.
-#Each row has an equal probability of occuring and represents a discreet outcome. The "avg +=" in the for loop adds the contribution of the value of the roll in that row to the avg
+#Step 2: Transform the matrix in to one where every row represents a dice roll, starting with 1, 1, 1, 1, then 1, 1, 1, 2, etc., and ending with 6, 6, 6, 6.
+#Each row has an equal probability of occuring and represents a discreet outcome. The "avg +=" in the for loop adds the contribution of the value of the roll in that row to the average
 #The values of i1, i2, i3 and i4 are then updated to be used by the next row.
 
 for k in range(1296):
@@ -47,12 +51,16 @@ for k in range(1296):
 print(avg)
 
 
-#2. Hacker statistics
+#Method 2. Hacker statistics
+#
+#Description: The goal with this method is to simulate rolling many dice and taking the average results of these rolls
+#
+#Step 1: Set the running total to 0 and enter a value for the number of rolls we will be using
 
 total = 0
 rolls = 10000
 
-#Loop which rolls 4 dice "rolls" times, takes the sum of the 4 dice and discards the lowest one. Adds this number to the total
+#Step 2: Loop which rolls 4 dice "rolls" times, takes the sum of the 4 dice and discards the lowest one. Adds this number to the total
 
 for m in range(rolls):
     d1 = random.randint(1, 6)
@@ -62,7 +70,7 @@ for m in range(rolls):
     stat = d1 + d2 + d3 + d4 - min(d1, d2, d3, d4)
     total += stat
 
-#Takes the total of all the "rolls" dice rolls and then divices by the number of rolls to get the average
+#Step 3: Take the total of all the "rolls" dice rolls and then divices by the number of rolls to get the average
 total = total/rolls
 
 print(total)
